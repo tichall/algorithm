@@ -6,14 +6,13 @@ class Solution {
         // 남은 양을 해결하는데 걸리는 일수 
         // => 남은 진도 % 속도 == 0 ? 남은 진도 / 속도 : 남은 진도 / 속도 + 1
         // 각 작업마다 걸리는 일수를 모두 구한다.
-        // 첫 번째 작업이 끝난 날 -> 해당 일수보다 적거나 같은 작업이 전부 끝난다.
-        // 나머지 
+        // 작업이 끝난 날 -> 해당 일수보다 적거나 같은 이후 작업이 전부 배포된다.
         Deque<Integer> days = new ArrayDeque<>();
         List<Integer> answer = new ArrayList<>();
         
         for (int i = 0; i < progresses.length; i++) {
             int remain = 100 - progresses[i];
-            int day = remain % speeds[i] == 0 ? remain / speeds[i] : remain / speeds[i] + 1;
+            int day = (remain + speeds[i] - 1) / speeds[i];
             days.add(day);
         }
         
