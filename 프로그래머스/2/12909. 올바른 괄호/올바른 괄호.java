@@ -1,5 +1,3 @@
-import java.util.*;
-
 class Solution {
     boolean solution(String s) {
         int count = 0;
