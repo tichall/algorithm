@@ -36,7 +36,12 @@ class Solution {
             } 
         }
         
-        result.sort(Comparator.naturalOrder());
-        return result.stream().mapToInt(Integer::intValue).toArray();
+        int[] arr = new int[result.size()];
+        int cnt = 0;
+        for (int num : result) {
+            arr[cnt++] = num;
+        }
+        
+        return arr;
     }
 }
