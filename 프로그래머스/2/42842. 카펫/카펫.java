@@ -3,11 +3,7 @@ class Solution {
         // 노란색 격자의 모양이 확정되면 노란색 격자의 가로, 세로에 2 더한 게 답
         int[] answer = new int[2];
         
-        if (yellow == 1) {
-            return new int[]{3, 3};
-        }
-        
-        for (int i = 1; i <= yellow / 2; i++) {
+        for (int i = 1; i <= yellow; i++) {
             if(yellow % i == 0) {
                 int h = yellow / i;
                 int tempBrown = i * 2 + h * 2 + 4;
