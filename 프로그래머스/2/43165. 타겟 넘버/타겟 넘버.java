@@ -17,15 +17,15 @@ class Solution {
         // 이렇게 깊이를 사전 설정할 수 없는 경우에 재귀를 써야 하는 것인가..?
         // 재귀를 써야 한다는 접근 방식이 생각났음에도 불구하고 재귀함수 어떤 식으로 작성해야 할지 감 안 잡힘
         
-        return targetNumber(-1, 0);
+        return targetNumber(0, 0);
     }
     
     public int targetNumber(int index, int sum) {
-        if (index == numbers.length - 1) {
+        if (index == numbers.length) {
             return sum == target ? 1 : 0;
         }
         
-        return targetNumber(index + 1, sum + numbers[index + 1]) +
-        targetNumber(index + 1, sum - numbers[index + 1]);
+        return targetNumber(index + 1, sum + numbers[index]) +
+        targetNumber(index + 1, sum - numbers[index]);
     }
 }
