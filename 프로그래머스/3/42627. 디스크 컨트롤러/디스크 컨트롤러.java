@@ -6,13 +6,6 @@ class Solution {
     static final int workTimeIdx = 2;
     
     public int solution(int[][] jobs) {
-        // 대기 큐에서 우선순위가 높은 작업을 꺼내서 시킨다.
-        // 1. 소요 시간이 짧은 것
-        // 2. 요청 시각이 빠른 것
-        // 3. 작업 번호가 작은 것
-        // 작업은 하나씩 직렬로 이루어진다.
-        // 모든 작업의 평균 반환 시간 정수 부분을 반환한다.
-        int[] returnTimes = new int[jobs.length];
         Arrays.sort(jobs, (a, b) -> Integer.compare(a[0], b[0]));
         
         PriorityQueue<int[]> que = new PriorityQueue<>(
@@ -20,11 +13,7 @@ class Solution {
             .thenComparingInt(job -> job[reqTimeIdx])
             .thenComparingInt(job -> job[jobNumIdx])
         );
-        
-        que.offer(new int[]{0, jobs[0][0], jobs[0][1]});
-        int jobIdx = 1;
-        int currentTime = jobs[0][0];
-        
+     
         // 대기 큐에서 빠져나간 작업의 작업 시간이 지난 후
         // 현재 시간보다 이전에 요청이 들어온 작업을 모두 대기 큐에 넣는다.
         // poll 한다.
@@ -36,6 +25,9 @@ class Solution {
                 // 이것도 사실 명확하지 않다. 이미 모든 요소가 들어갔지만 큐에서 기다리고 있는 작업이 존재할 수 있다.
             // 근데 job의 요소가 시간 순서대로 정렬되어 있다는 것이 보장되지 않았음..
             // 아니면 정렬하고 빼는 것도 방법임
+        int returnTime = 0;
+        int currentTime = 0;
+        int jobIdx = 0;
         
         while (!que.isEmpty() || jobIdx < jobs.length) {
             // 현재 시간보다 전에 들어온 요청을 대기 큐에 넣는다.
@@ -53,17 +45,12 @@ class Solution {
             if (!que.isEmpty()) {
                 int[] curJob = que.poll();
                 currentTime += curJob[workTimeIdx];
-                returnTimes[curJob[jobNumIdx]] = currentTime - curJob[reqTimeIdx];
+                returnTime += currentTime - curJob[reqTimeIdx];
             } else {
-                currentTime++;
+                currentTime = jobs[jobIdx][0];
             }
         }
         
-        int sum = 0;
-        for (int returnTime : returnTimes) {
-            sum += returnTime;
-        }
-        
-        return sum / returnTimes.length;
+        return returnTime / jobs.length;
     }
 }
