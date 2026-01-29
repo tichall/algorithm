@@ -20,7 +20,7 @@ class Solution {
         
         // 1번 노드
         que.add(1); 
-        dist[1] = 1;
+        dist[1] = 0;
         int max = 0;
         
         while (!que.isEmpty()) {
