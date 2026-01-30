@@ -8,7 +8,6 @@ class Solution {
         // 어떤 로직으로 해야하고, 효율적인 로직은 무엇인지 떠오르지 않음
         
         visited = new boolean[dungeons.length];
-        Arrays.fill(visited, false);
         
         dfs(k, dungeons, 0);
         return max;
