@@ -3,32 +3,27 @@ class Solution {
     static String[] alphabet = new String[]{"A","E","I","O","U"};
     static boolean found = false;
     public int solution(String word) {
-        // 글자 5개로 만들 수 있는 길이 5 이하의 모든 단어
-        // 만들 수 있는 모든 단어를 사전 순서대로 탐색하고, 
-        // 탐색하는 동안 사전 순서를 1씩 늘리며 카운트한다. 아니면 맵 같은 곳에 저장해두거나..
-        // 글자는 한 단어 안에서 반복될 수 있다. -> "AAAAA"
-        // 백트래킹 필요..?
-        dfs(word, "");
+
+        dfs(word, new StringBuilder());
         return order;
     }
     
-    public void dfs(String word, String newWord) {
-        // if (found == true) return;
-        
-        if (newWord.equals(word)) {
+    public void dfs(String word, StringBuilder sb) {
+        // 종료 조건 -> 정답을 찾았을 때
+        if (sb.toString().equals(word)) {
             found = true;
             return;
         }
         
-        if (newWord.length() < 5) {
-            for (int i = 0; i < alphabet.length; i++) {
-                if (found == true) return;
-                order++;
-                dfs(word, newWord + alphabet[i]);
-            }
-        }
+        // 종료 조건 -> 단어 길이가 5일 때
+        if (sb.length() == 5) return;
         
-        // a -> aa-> aaa -> aaaa -> aaaaa
-        // 재귀호출에서 사전 순서를 어떻게 반환할 것인가..
+        for (int i = 0; i < alphabet.length; i++) {
+            if (found) return;
+            order++;
+            sb.append(alphabet[i]);
+            dfs(word, sb);
+            sb.deleteCharAt(sb.length() - 1); // 백트래킹
+        }
     } 
 }
