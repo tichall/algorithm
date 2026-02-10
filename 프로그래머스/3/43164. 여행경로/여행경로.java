@@ -1,55 +1,72 @@
 import java.util.*;
 
 class Solution {
-    boolean[] visited;
-    
+    List<Stack<String>> result;
+    String[][] tickets;
+
     public String[] solution(String[][] tickets) {
-        // 방문하는 공항의 경로를 배열에 담아 반환
-        // 주어진 항공권을 모두 사용해라
-        // 가능한 경로가 2개 이상이면 알파벳 순서가 앞서는 경로..
-        // 알파벳 순서가 앞서는 경로부터 탐색할 수 있도록 한다.
-        // visited 배열 사용할 때에도 공항 이름 String을 인덱스로 어떻게 매핑하지..?
-        visited = new boolean[tickets.length];
-        
-        Map<String, List<Integer>> map = new HashMap<>();
-        List<String> path = new ArrayList<>();
-        
-        for (int i = 0; i < tickets.length; i++) {
-            String start = tickets[i][0];
-            if (!map.containsKey(start)) {
-                map.put(start, new ArrayList<>());
-            }
-            List<Integer> list = map.get(start);
-            list.add(i);
+        result = new ArrayList<>();
+        this.tickets = tickets;
+
+        boolean[] visited = new boolean[tickets.length];
+        Stack<String> st = new Stack<>();
+        st.push("ICN");
+
+        dfs(visited, st, 0);
+
+        if (result.size() > 1) {
+            Collections.sort(result, new Comparator<Stack<String>>() {
+                @Override
+                public int compare(Stack<String> o1, Stack<String> o2) {
+                    for (int i = 0; i < o1.size(); i++) {
+                        String s1 = o1.get(i);
+                        String s2 = o2.get(i);
+
+                        if (!s1.equals(s2)) {
+                            return s1.compareTo(s2);
+                        }
+                    }
+
+                    return 0;
+                }
+            });
         }
-        
-        for (List<Integer> list : map.values()) {
-            list.sort((a, b) -> tickets[a][1].compareTo(tickets[b][1]));
+
+        Stack<String> res = result.remove(0);
+        String[] answer = new String[res.size()];
+
+        for (int i = 0; i < answer.length; i++) {
+            answer[i] = res.get(i);
         }
-        
-        path.add("ICN");
-        dfs("ICN", path, tickets, map);
-        return path.toArray(new String[0]);
+
+        return answer;
     }
-     
-    public boolean dfs(String start, 
-                        List<String> path,
-                        String[][] tickets,
-                        Map<String, List<Integer>> map
-    ) {
-        if (path.size() == tickets.length + 1) return true;
-        // 출발지에서 갈 수 있는 도착지를 순회
-        for (Integer end : map.getOrDefault(start, Collections.emptyList())) {
-            if (!visited[end]) {
-                String nextAirport = tickets[end][1];
-                
-                visited[end] = true;
-                path.add(nextAirport);
-                if (dfs(nextAirport, path, tickets, map)) return true;
-                visited[end] = false;
-                path.remove(path.size() - 1);
+
+    public void dfs(boolean[] visited, Stack<String> st, int len) {
+        if (len == tickets.length) {
+            Stack<String> res = new Stack<>();
+            for (String s : st) {
+                res.push(s);
+            }
+
+            result.add(res);
+            return;
+        }
+
+        String arrive = st.peek();
+
+        for (int i = 0; i < tickets.length; i++) {
+            String[] tic = tickets[i];
+
+            if (!visited[i] && arrive.equals(tic[0])) {
+                st.push(tic[1]);
+                visited[i] = true;
+
+                dfs(visited, st, len + 1);
+
+                visited[i] = false;
+                st.pop();
             }
         }
-        return false;
     }
 }
