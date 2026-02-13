@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
@@ -12,6 +14,7 @@ public class Main {
         //
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st;
         int t = Integer.parseInt(br.readLine());
         int result;
@@ -43,8 +46,10 @@ public class Main {
                     }
                 }
             }
-            System.out.println(result);
+            bw.append(Integer.toString(result));
+            bw.newLine();
         }
+        bw.flush();
     }
 
     public static void bfs(int x, int y, boolean[][] land) {
