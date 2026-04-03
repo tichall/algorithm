@@ -1,0 +1,9 @@
+# bass, snapper의 fish_type 뽑기
+#
+select count(*) fish_count
+from fish_info
+where fish_type in (
+    select fish_type
+    from fish_name_info
+    where fish_name = 'BASS' or fish_name = 'SNAPPER'
+)
