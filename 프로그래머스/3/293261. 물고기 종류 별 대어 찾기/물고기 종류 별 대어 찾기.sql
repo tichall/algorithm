@@ -1,0 +1,24 @@
+-- 코드를 작성해주세요
+# MySQL의 sql_mode=only_full_group_by 모드에서는 select로 뽑을 요소들이 모두 group by에 포함되어 있거나, 집계함수를 사용해야 함 
+# SELECT ID, FISH_NAME, LENGTH
+# FROM FISH_INFO A 
+# INNER JOIN FISH_NAME_INFO B
+# ON A.FISH_TYPE = B.FISH_TYPE
+# GROUP BY FISH_NAME
+# HAVING MAX(LENGTH)
+
+# 종류 별로 가장 큰 물고기 찾기
+
+SELECT ID, FISH_NAME, LENGTH
+FROM FISH_INFO F
+JOIN FISH_NAME_INFO N
+ON F.FISH_TYPE = N.FISH_TYPE
+WHERE (F.FISH_TYPE, LENGTH) IN (
+    SELECT FISH_TYPE, MAX(LENGTH) MAX_LENGTH
+    FROM FISH_INFO 
+    GROUP BY FISH_TYPE
+)
+ORDER BY ID
+
+
+
