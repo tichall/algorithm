@@ -1,0 +1,12 @@
+# 더 이상 업그레이드할 수 없는 아이템의 정보 출력하기
+# 더 이상 업그레이드할 수 없는? = 다른 아이템의 PARENT_ITEM이 아니면 됨
+# PARENT_ITEM 
+
+SELECT I.ITEM_ID, ITEM_NAME, RARITY
+FROM ITEM_INFO I
+LEFT JOIN ITEM_TREE T
+ON I.ITEM_ID = T.PARENT_ITEM_ID
+WHERE T.ITEM_ID IS NULL
+ORDER BY I.ITEM_ID DESC
+
+
